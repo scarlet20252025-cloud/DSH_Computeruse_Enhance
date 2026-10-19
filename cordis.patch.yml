@@ -1,0 +1,8 @@
+# Bundle 自激活补丁：安装进 profile 后（App 内「插件」页从路径安装，或手改
+# profile 的 package.json / cordis.patch.yml），此 patch 把本插件的宿主端入口挂进
+# profile 树。宿主端只注册面向模型的工具，不接管任何 UI 槽位，因此没有需要关掉的
+# 官方插件——卸载/禁用本插件即完全回到原状，无残留（唯一的残留是 DSH home 下的
+# plugins/dsh-computer-use 数据目录，删掉即可）。
+- insert:
+    - id: dsh-computer-use
+      name: dsh-computer-use

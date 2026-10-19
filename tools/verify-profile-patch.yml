@@ -1,0 +1,32 @@
+# 验证用的叠加层：把模型路由指到**可用的** provider。
+#
+# 为什么需要它：`cu-verify` 这个验证用 profile 来自出厂的 headless 模板，默认走
+# `DEEPSEEK_API_KEY`；该 key 余额耗尽后每次运行都返回 402（`error.code === "QUOTA"`），
+# 模型压根不会启动，于是整层验证全红——那不是插件的失败，是环境的失败。
+#
+# 这里复刻桌面 profile 里**正在工作**的那套 pi-ai / BigModel 配置，仅作用于验证运行：
+# 通过 `dsh --patch <本文件>` 叠加，**不修改任何 profile 文件**。
+#
+# 用法：
+#   node tools/verify-in-dsh.mjs --patch=tools/verify-profile-patch.yml
+#
+# 注意：它会消耗你 BigModel（智谱）账号的额度——一次点击任务只有几千 token。
+# 换 provider 时只改下面两处 `provider` / `model` 即可。
+- id: llm-pi-ai
+  name: '@deepseek-ai/dsh-llm-pi-ai'
+  config:
+    providers:
+      zai:
+        apiKeyEnv: ZAI_API_KEY
+        displayName: BigModel
+        # 大陆 Coding Plan 端点（与官方控制台同一把 key）
+        baseURL: https://open.bigmodel.cn/api/coding/paas/v4
+        models:
+          - id: glm-5.3
+          - id: glm-5.3-flash
+
+- id: agent-default-model
+  name: '@deepseek-ai/dsh-agent-default-model'
+  config:
+    provider: zai
+    model: glm-5.3-flash

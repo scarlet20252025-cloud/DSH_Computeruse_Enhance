@@ -1,0 +1,76 @@
+{
+  "name": "dsh-computer-use",
+  "version": "0.1.0",
+  "description": "DSH Computer Use Enhance：把 ZCode 的 Computer Use 能力重建为 DSH 插件，并做性能与契约加固（Windows 原生后端 + C# 树遍历快路径）。",
+  "license": "MIT",
+  "type": "module",
+  "main": "src/index.js",
+  "engines": {
+    "node": ">=20"
+  },
+  "os": [
+    "win32"
+  ],
+  "exports": {
+    ".": "./src/index.js",
+    "./client": "./lib/client.js",
+    "./package.json": "./package.json"
+  },
+  "files": [
+    "src",
+    "lib",
+    "skills",
+    "docs",
+    "tools",
+    "cordis.patch.yml",
+    "LICENSE",
+    "NOTICE.md",
+    "README.md",
+    "HANDOVER.md"
+  ],
+  "keywords": [
+    "deepseek-harness",
+    "dsh-plugin",
+    "computer-use",
+    "cua",
+    "desktop-automation",
+    "ui-automation",
+    "screenshot",
+    "windows",
+    "performance",
+    "ui-automation-enhance"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/scarlet20252025-cloud/DSH_Computeruse_Enhance.git"
+  },
+  "homepage": "https://github.com/scarlet20252025-cloud/DSH_Computeruse_Enhance",
+  "bugs": {
+    "url": "https://github.com/scarlet20252025-cloud/DSH_Computeruse_Enhance/issues"
+  },
+  "dsh": {
+    "bundle": {
+      "patch": "./cordis.patch.yml"
+    },
+    "client": {
+      "platform": "web",
+      "inject": [
+        "@deepseek-ai/dsh-client-ui-conversation"
+      ]
+    }
+  },
+  "scripts": {
+    "check": "node --check src/index.js && node --check src/bridge.js && node --check src/tools.js && node --check src/schema.js && node --check src/format.js && node --check src/config.js && node --check src/skill.js && node --check src/indicator.js",
+    "test": "node --test \"test/*.test.mjs\"",
+    "ref:validator": "node tools/ref-extract-validator.mjs",
+    "smoke": "node tools/native-smoke.mjs",
+    "e2e": "node tools/e2e.mjs",
+    "verify:registry": "node tools/verify-real-registry.mjs",
+    "verify:in-dsh": "node tools/verify-in-dsh.mjs",
+    "install:plugin": "node tools/install-plugin.mjs",
+    "install-skill": "node tools/install-skill.mjs",
+    "indicator:smoke": "node tools/indicator-smoke.mjs",
+    "bench": "node tools/bench.mjs",
+    "call": "node tools/call.mjs"
+  }
+}

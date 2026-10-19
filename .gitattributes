@@ -1,0 +1,16 @@
+# 行尾与二进制处理。
+#
+# 为什么要单独说明：`src/native/*.ps1` 与 `tools/*.ps1` 必须保留 **UTF-8 BOM**——
+# Windows PowerShell 5.1 会把无 BOM 的 UTF-8 当 ANSI 读，中文注释会直接破坏语法解析。
+# 因此这些文件用 `-text` 让 git **按字节存取**，不做任何行尾转换，避免 BOM 或行尾被改写。
+#
+# 其余文本统一 LF（Windows 上的 Node 与 PowerShell 都能正确处理 LF）。
+* text=auto eol=lf
+
+*.ps1 -text
+*.png binary
+*.jpg binary
+*.ico binary
+
+# 锁文件与生成物不参与 diff 统计
+pnpm-lock.yaml -diff

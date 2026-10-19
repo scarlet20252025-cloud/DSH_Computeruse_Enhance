@@ -1,0 +1,35 @@
+# CI：本仓库是 Windows 插件，但大部分正确性不依赖真机桌面。
+#
+# 这里只跑「不需要真实桌面」的两层：
+#   - `npm run check`：全部源码语法检查
+#   - `npm test`     ：102 个单元测试（fresh clone 下部分官方交叉验证断言会自动跳过）
+#
+# 需要真机桌面的三层**故意不进 CI**（runner 没有可注入的交互桌面，结果会是假失败）：
+#   - `npm run smoke` / `npm run indicator:smoke` / `npm run e2e` / `npm run verify:in-dsh`
+# 它们在本地按 README §3.3 手动跑；判定说明见 docs/reverse-engineering.md §4。
+#
+# 没有 `.ref/` 时，依赖官方实现交叉验证的断言会自动跳过（见 NOTICE.md §3）——
+# 因此 CI 的 "skipped" 数量是预期的，不是配置错误。
+name: ci
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  test:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      - name: 语法检查
+        run: npm run check
+
+      - name: 单元测试
+        run: npm test
